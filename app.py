@@ -55,6 +55,24 @@ users = [
 cards = [
     {"id": "100", "name": "Try again", "win": False},
     {"id": "101", "name": "Uber Voucher", "win": True},
+    {"id": "102", "name": "Try again", "win": False},
+    {"id": "103", "name": "Try again", "win": False},
+    {"id": "104", "name": "Try again", "win": False},
+    {"id": "105", "name": "Try again", "win": False},
+    {"id": "106", "name": "Try again", "win": False},
+    {"id": "107", "name": "Try again", "win": False},
+    {"id": "108", "name": "Try again", "win": False},
+    {"id": "109", "name": "Try again", "win": False},
+    {"id": "110", "name": "Try again", "win": False},
+    {"id": "111", "name": "Try again", "win": False},
+    {"id": "112", "name": "Try again", "win": False},
+    {"id": "113", "name": "Try again", "win": False},
+    {"id": "114", "name": "Try again", "win": False},
+    {"id": "115", "name": "Try again", "win": False},
+    {"id": "116", "name": "Try again", "win": False},
+    {"id": "117", "name": "Try again", "win": False},
+    {"id": "118", "name": "Try again", "win": False},
+    {"id": "119", "name": "Try again", "win": False},
 ]
 
 
