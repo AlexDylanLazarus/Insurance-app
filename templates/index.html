@@ -5,10 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <style>
-        
+        .flip-card {
+            background-color: transparent;
+            width: 200px;
+            height: 300px;
+            perspective: 1000px;
+            float: left;
+            margin: 10px;
+        }
+
+        .flip-card-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .flip-card-front {
+            background-color: #ccc;
+        }
+
+        .flip-card-back {
+            background-color: #00f;
+            transform: rotateY(180deg);
+        }
     </style>
 </head>
 <body>
+    <h1>Welcome, {{ user['Name'] }}</h1>
+    <p>Credits: {{ user['Credits'] }}</p>
     
+    <h2>Random Cards:</h2>
+    <div>
+        {% for card in cards %}
+            <div class="flip-card" onclick="flipCard(this)">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+
+                        <p>Click to reveal</p>
+                    </div>
+                    <div class="flip-card-back">
+
+                        {% if card['win'] %}
+                            <p>Uber voucher</p>
+                        {% else %}
+                            <p>Try again</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <form action="/" method="POST">
+        <input type="hidden" name="user_id" value="{{ user['id'] }}">
+        <button type="submit">Try again</button>
+    </form>
+
+    <script>
+        function flipCard(card) {
+            var flippedCards = document.querySelectorAll('.flip-card.flipped');
+            if (flippedCards.length < 1) {
+                card.classList.toggle('flipped');
+            }
+        }
+    </script>
 </body>
 </html>
