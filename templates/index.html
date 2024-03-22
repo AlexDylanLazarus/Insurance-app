@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    
     <style>
+        body{
+        font-family:"Roboto",sans-serif ; 
+        }   
         .flip-card {
             background-color: transparent;
             width: 200px;
@@ -44,28 +48,90 @@
         }
 
         .flip-card-back {
-            background-color: #00f;
+            background-color: black; 
             transform: rotateY(180deg);
         }
+
+        .winner-card {
+            background-color: black; /* Set the whole winner card to black */
+        }
+
+        .success-message {
+            color: rgba(255, 255, 255, 0.582);
+            font-size: 11px;
+            position: absolute;
+            bottom: 10px; /* Adjust this value to position the message as desired */
+            text-align: center;
+            padding: 5px;
+        }
+        .try-again .flip-card-back {
+            background-color: #0075c9;
+        }
+        nav {
+            background-color: white; 
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; /* Add space between items */
+        }
+
+        nav ul li {
+            margin-right: 20px; 
+        }
+
+        nav ul li:last-child {
+            margin-right: 0; 
+        }
+
+        nav ul li a {
+            color: #0075c9; 
+            text-decoration: none; 
+        }
+
+        nav ul li.logo {
+            margin: 0 auto; 
+        }
+
+        nav ul li.logo img {
+            height: 50px; 
+        }
+        line{
+            color: rgba(255, 255, 255, 0.959);
+        }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="/policies">Home</a></li>
+            <li><a href="/">Policies</a></li>
+            <li class="logo"><img src="https://www.sanlam.co.za/Style%20Library/img/sanlam-logo.png"></li>
+        </ul>
+    </nav>
+    <hr class="line">
     <h1>Welcome, {{ user['Name'] }}</h1>
     <p>Credits: {{ user['Credits'] }}</p>
     
-    <h2>Random Cards:</h2>
-    <div>
+    <h2>Stand a chance to win a reward!</h2>
+    <div id="cards-container" style="pointer-events: auto;">
         {% for card in cards %}
-            <div class="flip-card" onclick="flipCard(this)">
+            <div class="flip-card{% if not card['win'] %} try-again{% endif %}" onclick="flipCard(this)">
                 <div class="flip-card-inner">
                     <div class="flip-card-front">
-
                         <p>Click to reveal</p>
                     </div>
                     <div class="flip-card-back">
-
                         {% if card['win'] %}
-                            <p>Uber voucher</p>
+                            <p class="winner-card">Uber voucher</p>
+                            <p class="success-message">Successfully added to your Sanlam Reality account</p>
                         {% else %}
                             <p>Try again</p>
                         {% endif %}
@@ -75,18 +141,28 @@
         {% endfor %}
     </div>
 
-    <form action="/" method="POST">
+    <form action="/" method="POST" id="try-again-form" style="display: none;">
         <input type="hidden" name="user_id" value="{{ user['id'] }}">
         <button type="submit">Try again</button>
     </form>
 
     <script>
-        function flipCard(card) {
-            var flippedCards = document.querySelectorAll('.flip-card.flipped');
-            if (flippedCards.length < 1) {
-                card.classList.toggle('flipped');
-            }
-        }
+window.onload = function() {
+    var userCredits = {{ user['Credits'] }};
+    if (userCredits <= 1) {
+        var cardsContainer = document.getElementById("cards-container");
+        cardsContainer.style.pointerEvents = "none"; // Disable card clicking
+        alert("Insufficient credits. Please add more credits to play.");
+    }
+}
+
+function flipCard(card) {
+    var flippedCards = document.querySelectorAll('.flip-card.flipped');
+    if (flippedCards.length < 1) {
+        card.classList.toggle('flipped');
+        document.getElementById("try-again-form").style.display = "block"; // Show the "Try again" button
+    }
+}
     </script>
 </body>
 </html>

@@ -15,9 +15,12 @@ def home_page():
         user_id = request.form.get("user_id")
         user = next((u for u in users if u["id"] == user_id), None)
         if user:
-            user["Credits"] -= 2
-            random.shuffle(cards)
-            return render_template("index.html", user=user, cards=cards)
+            if user["Credits"] > 1:
+                user["Credits"] -= 2
+                random.shuffle(cards)
+                return render_template("index.html", user=user, cards=cards)
+            else:
+                return "Insufficient credits. Please add more credits to play."
         else:
             return "User not found"
     else:
@@ -32,6 +35,11 @@ def login():
 @app.route("/register")
 def register():
     return render_template("register.html")
+
+
+@app.route("/policies")
+def policies():
+    return render_template("policies.html")
 
 
 users = [
@@ -52,27 +60,28 @@ users = [
     }
 ]
 
-cards = [
-    {"id": "100", "name": "Try again", "win": False},
-    {"id": "101", "name": "Uber Voucher", "win": True},
-    {"id": "102", "name": "Try again", "win": False},
-    {"id": "103", "name": "Try again", "win": False},
-    {"id": "104", "name": "Try again", "win": False},
-    {"id": "105", "name": "Try again", "win": False},
-    {"id": "106", "name": "Try again", "win": False},
-    {"id": "107", "name": "Try again", "win": False},
-    {"id": "108", "name": "Try again", "win": False},
-    {"id": "109", "name": "Try again", "win": False},
-    {"id": "110", "name": "Try again", "win": False},
-    {"id": "111", "name": "Try again", "win": False},
-    {"id": "112", "name": "Try again", "win": False},
-    {"id": "113", "name": "Try again", "win": False},
-    {"id": "114", "name": "Try again", "win": False},
-    {"id": "115", "name": "Try again", "win": False},
-    {"id": "116", "name": "Try again", "win": False},
-    {"id": "117", "name": "Try again", "win": False},
-    {"id": "118", "name": "Try again", "win": False},
-    {"id": "119", "name": "Try again", "win": False},
+insurance_policies = [
+    {
+        "policy_id": 1,
+        "policy_name": "Car Insurance",
+        "coverage": ["Accident", "Theft", "Liability"],
+        "premium": 500,
+        "deductible": 100,
+    },
+    {
+        "policy_id": 2,
+        "policy_name": "Home Insurance",
+        "coverage": ["Fire", "Flood", "Theft"],
+        "premium": 800,
+        "deductible": 200,
+    },
+    {
+        "policy_id": 3,
+        "policy_name": "Health Insurance",
+        "coverage": ["Hospitalization", "Prescription Drugs", "Surgery"],
+        "premium": 1000,
+        "deductible": 300,
+    },
 ]
 
 
@@ -161,6 +170,56 @@ def update_user(id):
         return jsonify({"message": "User updated successfully", "data": user_to_update})
     else:
         return jsonify({"message": "User not found"}), 404
+
+
+@app.route("/policies", methods=["GET"])
+def get_policies():
+    return jsonify(insurance_policies)
+
+
+@app.route("/policies/<int:policy_id>", methods=["GET"])
+def get_policy(policy_id):
+    policy = next(
+        (policy for policy in insurance_policies if policy["policy_id"] == policy_id),
+        None,
+    )
+    if policy:
+        return jsonify(policy)
+    else:
+        return jsonify({"message": "Policy not found"}), 404
+
+
+@app.route("/policies", methods=["POST"])
+def add_policy():
+    new_policy = request.json
+    insurance_policies.append(new_policy)
+    return jsonify({"message": "Policy added successfully"}), 201
+
+
+@app.route("/policies/<int:policy_id>", methods=["PUT"])
+def update_policy(policy_id):
+    policy_to_update = next(
+        (policy for policy in insurance_policies if policy["policy_id"] == policy_id),
+        None,
+    )
+    if policy_to_update:
+        policy_to_update.update(request.json)
+        return jsonify({"message": "Policy updated successfully"}), 200
+    else:
+        return jsonify({"message": "Policy not found"}), 404
+
+
+@app.route("/policies/<int:policy_id>", methods=["DELETE"])
+def delete_policy(policy_id):
+    global insurance_policies
+    initial_length = len(insurance_policies)
+    insurance_policies = [
+        policy for policy in insurance_policies if policy["policy_id"] != policy_id
+    ]
+    if len(insurance_policies) < initial_length:
+        return jsonify({"message": "Policy deleted successfully"}), 200
+    else:
+        return jsonify({"message": "Policy not found"}), 404
 
 
 if __name__ == "__main__":
