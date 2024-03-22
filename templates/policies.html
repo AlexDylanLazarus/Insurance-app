@@ -48,7 +48,8 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">    
-</head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    </head>
 <body>
     <nav>
         <ul>
@@ -59,6 +60,26 @@
         </ul>
     </nav>
     <hr class="line">
+    <div class="container">
+        <h1 style="color:#0075c9">Insurance Policies</h1>
+        <div class="row">
+            {% for policy in policies %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="{{ policy.image }}" class="card-img-top" alt="{{ policy.policy_name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ policy.policy_name }}</h5>
+                        <p class="card-text">
+                            <strong>Coverage:</strong> {{ policy.coverage|join(', ') }}<br>
+                            <strong>Premium:</strong> R{{ policy.premium }}<br>
+                            <strong>Deductible:</strong> R{{ policy.deductible }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
     
 </body>
 </html>
