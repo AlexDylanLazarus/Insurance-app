@@ -42,6 +42,11 @@ def policies():
     return render_template("policies.html")
 
 
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
+
+
 users = [
     {
         "id": "1",
