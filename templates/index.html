@@ -69,6 +69,8 @@
         }
         nav {
             background-color: white; 
+            box-shadow: 0 4px 4px -2px rgba(0,0,0,0.5);
+            padding:10px;
         }
 
         nav ul {
@@ -100,13 +102,20 @@
         nav ul li.logo img {
             height: 50px; 
         }
-        line{
-            color: rgba(255, 255, 255, 0.959);
+        .try-again-btn{
+            background-color: rgb(255, 0, 0);
+            border-radius: 20px;
+            border: 0px solid rgb(255, 0, 0);
+            padding:20px;
+        }
+        .try-again-btn:hover{
+            background-color: rgb(213, 0, 0);
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet"/>
 </head>
 <body>
     <nav>
@@ -117,7 +126,6 @@
             <li class="logo"><img src="https://www.sanlam.co.za/Style%20Library/img/sanlam-logo.png"></li>
         </ul>
     </nav>
-    <hr class="line">
     <h1>Welcome, {{ user['Name'] }}</h1>
     <p>Credits: {{ user['Credits'] }}</p>
     
@@ -144,7 +152,7 @@
 
     <form action="/" method="POST" id="try-again-form" style="display: none;">
         <input type="hidden" name="user_id" value="{{ user['id'] }}">
-        <button type="submit">Try again</button>
+        <button type="submit" class="try-again-btn">↻ Try again</button>
     </form>
 
     <script>
@@ -165,5 +173,80 @@ function flipCard(card) {
     }
 }
     </script>
+    <!-- Footer -->
+<footer class="text-center text-lg-start bg-body-tertiary text-muted">
+    <!-- Section: Social media -->
+    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+      <!-- Left -->
+      <div class="me-5 d-none d-lg-block">
+        <span>Keep up to date through our social media:</span>
+      </div>
+      <!-- Left -->
+  
+      <!-- Right -->
+      <div>
+        <a href="https://m.facebook.com/sanlamgroup/" class="me-4 text-reset">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://twitter.com/sanlam?lang=en" class="me-4 text-reset">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://www.sanlam.co.za/Pages/default.aspx?gad_source=1&gclid=Cj0KCQjw2PSvBhDjARIsAKc2cgPw6IECa134xoxG2bbyTHNkeqzKex_5wus_2neBzxXKpEuOVAmONWgaAkTCEALw_wcB&gclsrc=aw.ds" class="me-4 text-reset">
+          <i class="fab fa-google"></i>
+        </a>
+        <a href="https://www.instagram.com/sanlam_group?igsh=YW1iZ2Zvbnlvc2hq" class="me-4 text-reset">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.linkedin.com/company/sanlam/" class="me-4 text-reset">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </div>
+      <!-- Right -->
+    </section>
+    <!-- Section: Social media -->
+  
+          <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              Explore
+            </h6>
+            <p>
+              <a href="/policies" class="text-reset">Home</a>
+            </p>
+            <p>
+              <a href="/" class="text-reset">Win Rewards</a>
+            </p>
+            <p>
+              <a href="/profile" class="text-reset">Profile</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+  
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+            <p><i class="fas fa-home me-3"></i> 2 Strand Rd, Bellville, Cape Town, 7530</p>
+            <p>
+              <i class="fas fa-envelope me-3"></i>
+              info@example.com
+            </p>
+            <p><i class="fas fa-phone me-3"></i> 021 947 9111</p>
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!-- Grid row -->
+      </div>
+    </section>
+    <!-- Section: Links  -->
+  
+    <!-- Copyright -->
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        Copyright © 2024 | All rights reserved | Sanlam Limited is the Licensed controlling company of the Sanlam Limited Insurance Group. Sanlam Life Insurance Limited is a Licensed Life insurer, authorised financial services provider and a registered credit provider (NCRCP43)
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
 </body>
 </html>

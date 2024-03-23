@@ -89,6 +89,7 @@ users = [
         "Suburb": "Beverley Hills",
         "City": "Cape Town",
         "Country": "South Africa",
+        "sex": "Male",
         "policies": insurance_policies[1],
     }
 ]
