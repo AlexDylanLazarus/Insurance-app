@@ -4,18 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    
     <style>
-        body{
-        font-family:"Roboto",sans-serif ; 
-        }   
+        body {
+            font-family: "Roboto", sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;  
+        }
+ 
         .flip-card {
-            background-color: transparent;
-            width: 200px;
-            height: 300px;
-            perspective: 1000px;
-            float: left;
-            margin: 10px;
+        background-color: transparent;
+        width: 100px; 
+        height: 150px; 
+        perspective: 1000px;
+        float: left;
+        margin: 10px;
+        text-align: center;
+        border-radius: 20px;
         }
 
         .flip-card-inner {
@@ -41,26 +49,30 @@
             font-size: 24px;
             color: #fff;
             font-weight: bold;
+            border-radius: 20px;
         }
 
         .flip-card-front {
             background-color: #ccc;
+            border-radius: 20px;
         }
 
         .flip-card-back {
             background-color: black; 
             transform: rotateY(180deg);
+            font-size: 14px;
+            border-radius: 20px;
         }
 
         .winner-card {
-            background-color: black; /* Set the whole winner card to black */
+            background-color: black; 
         }
 
         .success-message {
             color: rgba(255, 255, 255, 0.582);
-            font-size: 11px;
+            font-size: 6px;
             position: absolute;
-            bottom: 10px; /* Adjust this value to position the message as desired */
+            bottom: 0px; 
             text-align: center;
             padding: 5px;
         }
@@ -111,6 +123,21 @@
         .try-again-btn:hover{
             background-color: rgb(213, 0, 0);
         }
+        .greetings{
+            color: #0075c9;
+        }
+        .content {
+            flex: 1; 
+            padding-bottom: 100px; 
+        }
+        footer {
+            width: 100%;
+            position: relative;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 20px 0;
+            text-align: center;
+        }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -126,10 +153,12 @@
             <li class="logo"><img src="https://www.sanlam.co.za/Style%20Library/img/sanlam-logo.png"></li>
         </ul>
     </nav>
-    <h1>Welcome, {{ user['Name'] }}</h1>
-    <p>Credits: {{ user['Credits'] }}</p>
-    
-    <h2>Stand a chance to win a reward!</h2>
+    <div class="container">
+    <div class="greetings">
+        <h1>Welcome, {{ user['Name'] }}</h1>
+        <p>Credits: {{ user['Credits'] }}</p>
+        <h2>Stand a chance to win a reward!</h2>
+    </div>
     <div id="cards-container" style="pointer-events: auto;">
         {% for card in cards %}
             <div class="flip-card{% if not card['win'] %} try-again{% endif %}" onclick="flipCard(this)">
@@ -149,34 +178,16 @@
             </div>
         {% endfor %}
     </div>
-
     <form action="/" method="POST" id="try-again-form" style="display: none;">
         <input type="hidden" name="user_id" value="{{ user['id'] }}">
         <button type="submit" class="try-again-btn">↻ Try again</button>
     </form>
-
-    <script>
-window.onload = function() {
-    var userCredits = {{ user['Credits'] }};
-    if (userCredits <= 1) {
-        var cardsContainer = document.getElementById("cards-container");
-        cardsContainer.style.pointerEvents = "none"; // Disable card clicking
-        alert("Insufficient credits. Please add more credits to play.");
-    }
-}
-
-function flipCard(card) {
-    var flippedCards = document.querySelectorAll('.flip-card.flipped');
-    if (flippedCards.length < 1) {
-        card.classList.toggle('flipped');
-        document.getElementById("try-again-form").style.display = "block"; // Show the "Try again" button
-    }
-}
-    </script>
-    <!-- Footer -->
+</div>
+ 
+<!-- Footer -->
 <footer class="text-center text-lg-start bg-body-tertiary text-muted">
     <!-- Section: Social media -->
-    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom" style="background-color: #0075c9;">
       <!-- Left -->
       <div class="me-5 d-none d-lg-block">
         <span>Keep up to date through our social media:</span>
@@ -184,20 +195,20 @@ function flipCard(card) {
       <!-- Left -->
   
       <!-- Right -->
-      <div>
-        <a href="https://m.facebook.com/sanlamgroup/" class="me-4 text-reset">
+      <div class="social-icons">
+        <a href="https://m.facebook.com/sanlamgroup/" class="text-reset">
           <i class="fab fa-facebook-f"></i>
         </a>
-        <a href="https://twitter.com/sanlam?lang=en" class="me-4 text-reset">
+        <a href="https://twitter.com/sanlam?lang=en" class="text-reset">
           <i class="fab fa-twitter"></i>
         </a>
-        <a href="https://www.sanlam.co.za/Pages/default.aspx?gad_source=1&gclid=Cj0KCQjw2PSvBhDjARIsAKc2cgPw6IECa134xoxG2bbyTHNkeqzKex_5wus_2neBzxXKpEuOVAmONWgaAkTCEALw_wcB&gclsrc=aw.ds" class="me-4 text-reset">
+        <a href="https://www.sanlam.co.za/Pages/default.aspx?gad_source=1&gclid=Cj0KCQjw2PSvBhDjARIsAKc2cgPw6IECa134xoxG2bbyTHNkeqzKex_5wus_2neBzxXKpEuOVAmONWgaAkTCEALw_wcB&gclsrc=aw.ds" class="text-reset">
           <i class="fab fa-google"></i>
         </a>
-        <a href="https://www.instagram.com/sanlam_group?igsh=YW1iZ2Zvbnlvc2hq" class="me-4 text-reset">
+        <a href="https://www.instagram.com/sanlam_group?igsh=YW1iZ2Zvbnlvc2hq" class="text-reset">
           <i class="fab fa-instagram"></i>
         </a>
-        <a href="https://www.linkedin.com/company/sanlam/" class="me-4 text-reset">
+        <a href="https://www.linkedin.com/company/sanlam/" class="text-reset">
           <i class="fab fa-linkedin"></i>
         </a>
       </div>
@@ -205,48 +216,65 @@ function flipCard(card) {
     </section>
     <!-- Section: Social media -->
   
-          <!-- Grid column -->
-          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-            <!-- Links -->
-            <h6 class="text-uppercase fw-bold mb-4">
-              Explore
-            </h6>
-            <p>
-              <a href="/policies" class="text-reset">Home</a>
-            </p>
-            <p>
-              <a href="/" class="text-reset">Win Rewards</a>
-            </p>
-            <p>
-              <a href="/profile" class="text-reset">Profile</a>
-            </p>
-          </div>
-          <!-- Grid column -->
-  
-          <!-- Grid column -->
-          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-            <!-- Links -->
-            <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
-            <p><i class="fas fa-home me-3"></i> 2 Strand Rd, Bellville, Cape Town, 7530</p>
-            <p>
-              <i class="fas fa-envelope me-3"></i>
-              info@example.com
-            </p>
-            <p><i class="fas fa-phone me-3"></i> 021 947 9111</p>
-          </div>
-          <!-- Grid column -->
-        </div>
-        <!-- Grid row -->
+    <!-- Grid row -->
+    <div class="row">
+      <!-- Grid column -->
+      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+        <!-- Links -->
+        <h6 class="text-uppercase fw-bold mb-4">
+          Explore
+        </h6>
+        <p>
+          <a href="/policies" class="text-reset">Home</a>
+        </p>
+        <p>
+          <a href="/" class="text-reset">Win Rewards</a>
+        </p>
+        <p>
+          <a href="/profile" class="text-reset">Profile</a>
+        </p>
       </div>
-    </section>
-    <!-- Section: Links  -->
+      <!-- Grid column -->
+  
+      <!-- Grid column -->
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+        <!-- Links -->
+        <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+        <p><i class="fas fa-home me-3"></i> 2 Strand Rd, Bellville, Cape Town, 7530</p>
+        <p>
+          <i class="fas fa-envelope me-3"></i>
+          info@example.com
+        </p>
+        <p><i class="fas fa-phone me-3"></i> 021 947 9111</p>
+      </div>
+      <!-- Grid column -->
+    </div>
+    <!-- Grid row -->
   
     <!-- Copyright -->
-    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    <div class="text-center p-4" style="background-color: rgba(255, 255, 255);">
         Copyright © 2024 | All rights reserved | Sanlam Limited is the Licensed controlling company of the Sanlam Limited Insurance Group. Sanlam Life Insurance Limited is a Licensed Life insurer, authorised financial services provider and a registered credit provider (NCRCP43)
     </div>
     <!-- Copyright -->
   </footer>
   <!-- Footer -->
+  <script>
+    window.onload = function() {
+        var userCredits = {{ user['Credits'] }};
+        if (userCredits <= 1) {
+            var cardsContainer = document.getElementById("cards-container");
+            cardsContainer.style.pointerEvents = "none"; // Disable card clicking
+            alert("Insufficient credits. Please add more credits to play.");
+        }
+    }
+    
+    function flipCard(card) {
+        var flippedCards = document.querySelectorAll('.flip-card.flipped');
+        if (flippedCards.length < 1) {
+            card.classList.toggle('flipped');
+            document.getElementById("try-again-form").style.display = "block"; // Show the "Try again" button
+        }
+    }
+        </script>
 </body>
 </html>
