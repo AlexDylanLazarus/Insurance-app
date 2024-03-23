@@ -6,7 +6,13 @@
     <title>Policies</title>
     <style>
         body{
-        font-family:"Roboto",sans-serif ; 
+            font-family: "Roboto", sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden; 
         } 
         nav {
             background-color: white; 
@@ -20,7 +26,7 @@
             padding: 0;
             display: flex; 
             align-items: center; 
-            justify-content: space-between; /* Add space between items */
+            justify-content: space-between; 
         }
 
         nav ul li {
@@ -43,11 +49,19 @@
         nav ul li.logo img {
             height: 50px; 
         }
+        footer {
+            width: 100%;
+            position: relative;
+            bottom: 0;
+            padding: 20px 0;
+            text-align: center;
+        }
     </style>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">    
-        <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">  
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet"/>  
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
 <body>
     <nav>
@@ -58,6 +72,68 @@
             <li class="logo"><img src="https://www.sanlam.co.za/Style%20Library/img/sanlam-logo.png"></li>
         </ul>
     </nav>
-
+     
+<!-- Footer -->
+<footer class="text-center text-lg-start bg-body-tertiary text-muted">  
+    <!-- Grid row -->
+    <div class="row" style="background-color: #0075c9; color:white; padding-top: 30px;">
+    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+        <h6 class="text-uppercase fw-bold mb-4">
+            Social Media
+        </h6>
+        <div class="social-icons">
+            <a href="https://m.facebook.com/sanlamgroup/" class="text-reset">
+              <i class="fa fa-facebook-f"></i>
+            </a>
+            <a href="https://twitter.com/sanlam?lang=en" class="text-reset">
+              <i class="fa fa-twitter"></i>
+            </a>
+            <a href="https://www.sanlam.co.za/Pages/default.aspx?gad_source=1&gclid=Cj0KCQjw2PSvBhDjARIsAKc2cgPw6IECa134xoxG2bbyTHNkeqzKex_5wus_2neBzxXKpEuOVAmONWgaAkTCEALw_wcB&gclsrc=aw.ds" class="text-reset">
+              <i class="fa fa-google"></i>
+            </a>
+            <a href="https://www.instagram.com/sanlam_group?igsh=YW1iZ2Zvbnlvc2hq" class="text-reset">
+              <i class="fa fa-instagram"></i>
+            </a>
+            <a href="https://www.linkedin.com/company/sanlam/" class="text-reset">
+              <i class="fa fa-linkedin"></i>
+            </a> 
+        </div>   
+    </div>
+      <!-- Grid column -->
+      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+        <!-- Links -->
+        <h6 class="text-uppercase fw-bold mb-4">
+          Explore
+        </h6>
+        <p>
+          <a href="/policies" class="text-reset">Home</a>
+        </p>
+        <p>
+          <a href="/" class="text-reset">Win Rewards</a>
+        </p>
+        <p>
+          <a href="/profile" class="text-reset">Profile</a>
+        </p>
+      </div>
+      <!-- Grid column -->
+  
+      <!-- Grid column -->
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+        <!-- Links -->
+        <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+        <p><i class="fa fa-home me-3"></i> 2 Strand Rd, Bellville, Cape Town, 7530</p>
+        <p><i class="fa fa-phone me-3"></i> 021 947 9111</p>
+      </div>
+      <!-- Grid column -->
+    </div>
+    <!-- Grid row -->
+  
+    <!-- Copyright -->
+    <div class="text-center p-4" style="background-color: rgba(255, 255, 255);">
+        Copyright © 2024 | All rights reserved | Sanlam Limited is the Licensed controlling company of the Sanlam Limited Insurance Group. Sanlam Life Insurance Limited is a Licensed Life insurer, authorised financial services provider and a registered credit provider (NCRCP43)
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
 </body>
 </html>
