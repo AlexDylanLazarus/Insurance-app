@@ -59,39 +59,20 @@
     </style>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">    
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">  
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet"/>  
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
 <body>
     <nav>
         <ul>
-            <li><a href="/policies">Home</a></li>
+            <li><a href="/pol">Home</a></li>
             <li><a href="/">Win Rewards</a></li>
             <li><a href="/profile">Profile</a></li>
+            <li><a href="/get_a_quote">Get a Quote</a></li>
             <li class="logo"><img src="https://www.sanlam.co.za/Style%20Library/img/sanlam-logo.png"></li>
         </ul>
     </nav>
-    <div class="container">
-        <h1 style="color:#0075c9">Insurance Policies</h1>
-        <div class="row">
-            {% for policy in policies %}
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <img src="{{ policy.image }}" class="card-img-top" alt="{{ policy.policy_name }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ policy.policy_name }}</h5>
-                        <p class="card-text">
-                            <strong>Coverage:</strong> {{ policy.coverage|join(', ') }}<br>
-                            <strong>Premium:</strong> R{{ policy.premium }}<br>
-                            <strong>Deductible:</strong> R{{ policy.deductible }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
      
 <!-- Footer -->
 <footer class="text-center text-lg-start bg-body-tertiary text-muted">  
@@ -126,7 +107,7 @@
           Explore
         </h6>
         <p>
-          <a href="/policies" class="text-reset">Home</a>
+          <a href="/pol" class="text-reset">Home</a>
         </p>
         <p>
           <a href="/" class="text-reset">Win Rewards</a>
