@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect, url_for
 import random
 
 app = Flask(__name__)
@@ -12,8 +12,12 @@ cards[uber_voucher_index]["win"] = True
 @app.route("/", methods=["GET", "POST"])
 def home_page():
     if request.method == "POST":
-        user_id = request.form.get("user_id")
-        user = next((u for u in users if u["id"] == user_id), None)
+        email = request.form.get("email")
+        password = request.form.get("password")
+        user = next(
+            (u for u in users if u["Email"] == email and u["Password"] == password),
+            None,
+        )
         if user:
             if user["Credits"] > 1:
                 user["Credits"] -= 2
@@ -25,16 +29,6 @@ def home_page():
             return "User not found"
     else:
         return render_template("index.html", user=users[0], cards=cards)
-
-
-@app.route("/login")
-def login():
-    return render_template("login.html")
-
-
-@app.route("/register")
-def register():
-    return render_template("register.html")
 
 
 @app.route("/pol")
@@ -87,8 +81,8 @@ users = [
         "Email": "alexdylanlazarus@gmail.com",
         "Phone_number": "0633603171",
         "Credits": 100,
-        "Street Address": "2 Tree Street",
-        "Zip code": "1999",
+        "Street_Address": "2 Tree Street",
+        "Zip_code": "1999",
         "Suburb": "Beverley Hills",
         "City": "Cape Town",
         "Country": "South Africa",
@@ -96,6 +90,70 @@ users = [
         "policies": insurance_policies[1],
     }
 ]
+
+
+@app.route("/login", methods=["GET"])
+def login():
+    return render_template("login.html")
+
+
+@app.route("/after_login", methods=["POST"])
+def after_login():
+    email = request.form.get("email")
+    password = request.form.get("password")
+    go_ahead = next(
+        (
+            user
+            for user in users
+            if user["Password"] == password and user["Email"] == email
+        ),
+        None,
+    )
+    if go_ahead:
+        return render_template("index.html", user=go_ahead)
+    else:
+        return "Invalid email or password"
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        # Retrieve form data
+        first_name = request.form.get("Name")
+        last_name = request.form.get("Last_name")
+        date_of_birth = request.form.get("Date_of_birth")
+        email = request.form.get("email")
+        password = request.form.get("Password")
+        phone_number = request.form.get("Phone_number")
+        street_address = request.form.get("Street_Adress")
+        zip_code = request.form.get("Zip_code")
+        suburb = request.form.get("Suburb")
+        city = request.form.get("City")
+        country = request.form.get("Country")
+        gender = request.form.get("gender")
+        new_user = {
+            "Name": first_name,
+            "Last_name": last_name,
+            "Date_of_birth": date_of_birth,
+            "Email": email,
+            "Password": password,
+            "Phone_number": phone_number,
+            "Credits": 10,
+            "Street_Address": street_address,
+            "Zip_code": zip_code,
+            "Suburb": suburb,
+            "City": city,
+            "Country": country,
+            "sex": gender,
+        }
+
+        # Add the new user to the list of users
+        users.append(new_user)
+
+        # Redirect to login page after successful registration
+        return redirect(url_for("login"))
+    else:
+        return render_template("register.html")
 
 
 @app.route("/cards")
