@@ -182,7 +182,7 @@
             </div>
         {% endfor %}
     </div>
-    <form action="/" method="POST" id="try-again-form" style="display: none;">
+    <form action="/try_again" method="POST" id="try-again-form" style="display: none;">
         <input type="hidden" name="user_id" value="{{ user['id'] }}">
         <button type="submit" class="try-again-btn">↻ Try again</button>
     </form>
