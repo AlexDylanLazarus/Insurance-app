@@ -4,50 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Policies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        body{
+        body {
             font-family: "Roboto", sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            overflow-x: hidden; 
-        } 
-        nav {
-            background-color: white; 
-            box-shadow: 0 4px 4px -2px rgba(0,0,0,0.5);
-            padding:10px;
-        }
-
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-        }
-
-        nav ul li {
-            margin-right: 20px; 
-        }
-
-        nav ul li:last-child {
-            margin-right: 0; 
-        }
-
-        nav ul li a {
-            color: #0075c9; 
-            text-decoration: none; 
-        }
-
-        nav ul li.logo {
-            margin: 0 auto; 
-        }
-
-        nav ul li.logo img {
-            height: 50px; 
+            overflow-x: hidden;
         }
         footer {
             width: 100%;
@@ -56,24 +26,71 @@
             padding: 20px 0;
             text-align: center;
         }
+        .navbar-toggler-icon {
+            visibility: visible;
+        }
     </style>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">  
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet"/>  
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
+</head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/pol">Home</a></li>
-            <li><a href="/">Win Rewards</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/get_a_quote">Get a Quote</a></li>
-            <li class="logo"><img src="https://www.sanlam.co.za/Style%20Library/img/sanlam-logo.png"></li>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img src="https://www.sanlam.co.za/Style%20Library/img/sanlam-logo.png" height="50" alt="Sanlam Logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/pol">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Win Rewards</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/profile">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/get_a_quote">Get a Quote</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-primary" href="/login">Login</a>
+            </li>
         </ul>
-    </nav>
-     
+    </div>
+</nav>
+    <div class="container">
+      <h1 class="mt-5" style="color:#0075c9">Get a Quote</h1>
+      <form action="/calculate_quote" method="POST" id="quoteForm">
+          <div class="form-group">
+              <label for="insurance_policy">Select Insurance Policy:</label>
+              <select name="insurance_policy" class="form-select">
+                  {% for policy in policies %}
+                  <option value="{{ policy.policy_id }}">{{ policy.policy_name }}</option>
+                  {% endfor %}
+              </select>
+          </div>
+          <div class="form-group">
+              <label for="coverage">Coverage Amount:</label>
+              <input type="number" class="form-control" id="coverage" name="coverage">
+          </div>
+          <div class="form-group">
+              <label for="deductible">Deductible Amount:</label>
+              <input type="number" class="form-control" id="deductible" name="deductible">
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin:20px;">Calculate Quote</button>
+      </form>
+      <!-- Display the calculated quote if available -->
+      {% if quote %}
+      <div class="alert alert-success" role="alert">Your insurance quote is: R{{ quote }}</div>
+      {% endif %}
+
+      <!-- Display error message if any -->
+      {% if error %}
+      <div class="alert alert-danger" role="alert">{{ error }}</div>
+      {% endif %}
+  </div>
 <!-- Footer -->
 <footer class="text-center text-lg-start bg-body-tertiary text-muted">  
     <!-- Grid row -->
@@ -136,5 +153,6 @@
     <!-- Copyright -->
   </footer>
   <!-- Footer -->
-</body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script></body>
 </html>
