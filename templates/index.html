@@ -90,18 +90,6 @@
         .try-again .flip-card-back {
             background-color: #0075c9;
         }
-
-        .try-again-btn{
-            background-color: rgb(255, 0, 0);
-            border-radius: 20px;
-            border: 0px solid rgb(255, 0, 0);
-            padding:20px;
-        }
-
-        .try-again-btn:hover{
-            background-color: rgb(213, 0, 0);
-        }
-
         .greetings{
             color: #0075c9;
         }
@@ -126,7 +114,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/pol">
             <img src="https://www.sanlam.co.za/Style%20Library/img/sanlam-logo.png" height="50" alt="Sanlam Logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -178,11 +166,11 @@
             </div>
         {% endfor %}
     </div>
-    <form action="/try_again" method="POST" id="try-again-form" style="display: none;">
-        <input type="hidden" name="user_id" value="{{ user['id'] }}">
-        <button type="submit" class="try-again-btn">↻ Try again</button>
-    </form>
 </div>
+<form action="/try_again" method="POST" id="try-again-form" style="display: none; text-align: center;">
+    <input type="hidden" name="user_id" value="{{ user['id'] }}">
+    <button type="submit" class="btn btn-danger">↻ Try again</button>
+</form>
  
 <!-- Footer -->
 <footer class="text-center text-lg-start bg-body-tertiary text-muted">  

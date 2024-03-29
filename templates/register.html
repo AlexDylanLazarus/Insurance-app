@@ -24,67 +24,113 @@
     <div class="container">
         <h2 class="mt-5 mb-4" style="color:#0075c9">Register</h2>
         <form method="post" action="/register">
+            {{ form.hidden_tag() }}
+        
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputName">First Name</label>
-                    <input name="Name" type="text" class="form-control" id="inputName" placeholder="Enter your first name" required="required">
+                    {{ form.first_name.label }} 
+                    {{ form.first_name(class="form-control", placeholder="Enter your first name") }}
+                    {% for error in form.first_name.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputLastName">Last Name</label>
-                    <input name="Last_name" type="text" class="form-control" id="inputLastName" placeholder="Enter your last name" required="required">
+                    {{ form.last_name.label }}
+                    {{ form.last_name(class="form-control", placeholder="Enter your last name") }}
+                    {% for error in form.last_name.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
                 </div>
             </div>
+        
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="inputDOB">Date of Birth</label>
-                    <input name="Date_of_birth" type="text" class="form-control" id="inputDOB" placeholder="Enter your date of birth" required="required">
+                    {{ form.date_of_birth.label }}
+                    {{ form.date_of_birth(class="form-control", placeholder="Enter your date of birth") }}
+                    {% for error in form.date_of_birth.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="inputEmail">Email</label>
-                    <input name="email" type="email" class="form-control" id="inputEmail" placeholder="Enter your email" required="required">
+                    {{ form.email.label }}
+                    {{ form.email(class="form-control", placeholder="Enter your email") }}
+                    {% for error in form.email.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
                 </div>
             </div>
+        
             <div class="form-group">
-                <label for="inputPassword">Password</label>
-                <input name="Password" type="password" class="form-control" id="inputPassword" placeholder="Enter your password" required="required">
+                {{ form.password.label }}
+                {{ form.password(class="form-control", placeholder="Enter your password") }}
+                {% for error in form.password.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
+        
             <div class="form-group">
-                <label for="inputPhone">Phone Number</label>
-                <input name="Phone_number" type="text" class="form-control" id="inputPhone" placeholder="Enter your phone number" required="required">
+                {{ form.phone_number.label }}
+                {{ form.phone_number(class="form-control", placeholder="Enter your phone number") }}
+                {% for error in form.phone_number.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
+        
             <div class="form-group">
-                <label for="inputAddress">Street Address</label>
-                <input name="Street_Address" type="text" class="form-control" id="inputAddress" placeholder="Enter your Street Address" required="required">
+                {{ form.street_address.label }}
+                {{ form.street_address(class="form-control", placeholder="Enter your street address") }}
+                {% for error in form.street_address.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
+        
             <div class="form-group">
-                <label for="inputZip">Zip_code</label>
-                <input name="Zip_code" type="text" class="form-control" id="inputZip" placeholder="Enter your zip code" required="required">
+                {{ form.zip_code.label }}
+                {{ form.zip_code(class="form-control", placeholder="Enter your zip code") }}
+                {% for error in form.zip_code.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
+        
             <div class="form-group">
-                <label for="inputSuburb">Suburb</label>
-                <input name="Suburb" type="text" class="form-control" id="inputSuburb" placeholder="Enter your Suburb name" required="required">
+                {{ form.suburb.label }}
+                {{ form.suburb(class="form-control", placeholder="Enter your suburb") }}
+                {% for error in form.suburb.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
+        
             <div class="form-group">
-                <label for="inputCity">City</label>
-                <input name="City" type="text" class="form-control" id="inputCity" placeholder="Enter your City Name" required="required">
+                {{ form.city.label }}
+                {{ form.city(class="form-control", placeholder="Enter your city") }}
+                {% for error in form.city.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
+        
             <div class="form-group">
-                <label for="inputCountry">Country</label>
-                <input name="Country" type="text" class="form-control" id="inputCountry" placeholder="Enter your Country name" required="required">
+                {{ form.country.label }}
+                {{ form.country(class="form-control", placeholder="Enter your country") }}
+                {% for error in form.country.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
+        
             <div class="form-group">
-                <label>Gender</label>
+                <label>{{ form.gender.label }}</label>
                 <div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="maleRadio" value="male">
-                        <label class="form-check-label" for="maleRadio">Male</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="femaleRadio" value="female">
-                        <label class="form-check-label" for="femaleRadio">Female</label>
-                    </div>
+                    {% for choice in form.gender.choices %}
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" id="{{ form.gender.id }}_{{ loop.index }}" name="{{ form.gender.name }}" value="{{ choice[0] }}" {% if form.gender.data == choice[0] %} checked {% endif %}>
+                            <label class="form-check-label" for="{{ form.gender.id }}_{{ loop.index }}">{{ choice[1] }}</label>
+                        </div>
+                    {% endfor %}
                 </div>
+                {% for error in form.gender.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
             </div>
+        
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>
