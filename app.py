@@ -102,6 +102,16 @@ class User(db.Model):
         }
 
 
+class PotentialCustomers(db.Model):
+    __tablename__ = "potential_customers"
+
+    id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()))
+    email = db.Column(db.String(255), nullable=False, unique=True)
+
+    def to_dict(self):
+        return {"id": self.id, "email": self.email}
+
+
 from cards_bp import cards_bp
 from insurance_bp import insurance_bp
 from users_bp import users_bp
@@ -154,29 +164,52 @@ def quote():
 
 @app.route("/calculate_quote", methods=["POST"])
 def calculate_quote():
-    # Retrieve form data
+    # Assuming it's car insurance
     insurance_policy_id = request.form.get("insurance_policy")
-    coverage = float(request.form.get("coverage"))
-    deductible = float(request.form.get("deductible"))
+    user_age = int(request.form.get("user_age"))
+    user_email = request.form.get("user_email")
 
-    # Find the selected insurance policy
-    insurance_policy = Insurance.query.filter_by(policy_id=insurance_policy_id).first()
+    # Retrieve the insurance policy based on the provided ID
+    insurance_policy = Insurance.query.get(insurance_policy_id)
 
-    if insurance_policy:
-        # Retrieve policy details
-        premium = insurance_policy.premium
+    if not insurance_policy:
+        return render_template("get_a_quote.html", error="Invalid insurance policy ID")
 
-        # Calculate the quote based on coverage and deductible
-        quote = premium * (1 + coverage / 100) * (1 - deductible / 100)
-
-        insurance_policies = Insurance.query.all()
+    if insurance_policy.policy_id != 1:
         return render_template(
-            "get_a_quote.html", policies=insurance_policies, quote=quote
+            "get_a_quote.html", error="Non-car insurance policy selected"
         )
+
+    premium = insurance_policy.premium
+    car_year = int(request.form.get("car_year"))
+    car_value = float(request.form.get("car_value"))
+
+    # Calculate base quote based on car details
+    base_quote = premium * (car_year / 10) * (car_value / 1000)
+
+    # Apply age-based discounts
+    if user_age < 25:
+        discount = 0.2  # 20% discount for users under 25 years old
+    elif user_age >= 25 and user_age < 40:
+        discount = 0.1  # 10% discount for users between 25 and 40 years old
     else:
-        return render_template(
-            "get_a_quote.html", error="Invalid insurance policy selected"
-        )
+        discount = 0  # No discount for users 40 years old and above
+
+    # Calculate final quote after applying discount
+    final_quote = base_quote * (1 - discount)
+
+    # Check if the email already exists in the table
+    existing_customer = PotentialCustomers.query.filter_by(email=user_email).first()
+
+    if existing_customer:
+        return render_template("get_a_quote.html", quote=final_quote)
+
+    # Save the user's email to the potential customers table
+    new_customer = PotentialCustomers(email=user_email)
+    db.session.add(new_customer)
+    db.session.commit()
+
+    return render_template("get_a_quote.html", quote=final_quote)
 
 
 @app.get("/pol/<int:policy_id>")

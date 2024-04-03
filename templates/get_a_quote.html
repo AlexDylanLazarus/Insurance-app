@@ -1,158 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Policies</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet">    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        body {
-            font-family: "Roboto", sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        footer {
-            width: 100%;
-            position: relative;
-            bottom: 0;
-            padding: 20px 0;
-            text-align: center;
-        }
-        .navbar-toggler-icon {
-            visibility: visible;
-        }
-    </style>
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/pol">
-        <img src="https://www.sanlam.co.za/Style%20Library/img/sanlam-logo.png" height="50" alt="Sanlam Logo">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="/pol">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/">Win Rewards</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/profile">Profile</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/get_a_quote">Get a Quote</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link btn btn-primary" href="/login">Login</a>
-            </li>
-        </ul>
+{% extends "base.html" %}
+{% block title %}Get a Quote{% endblock %} 
+{% block content %} 
+<div class="container">
+  <h1 class="mt-5" style="color:#0075c9">Get a Quote for Car Insurance</h1>
+  <form action="/calculate_quote" method="POST" id="quoteForm">
+    <input type="hidden" name="insurance_policy" value="1">
+    <div class="form-group">
+        <label for="car_year">Year Car Bought:</label>
+        <input type="number" class="form-control" id="car_year" name="car_year">
     </div>
-</nav>
-    <div class="container">
-      <h1 class="mt-5" style="color:#0075c9">Get a Quote</h1>
-      <form action="/calculate_quote" method="POST" id="quoteForm">
-          <div class="form-group">
-              <label for="insurance_policy">Select Insurance Policy:</label>
-              <select name="insurance_policy" class="form-select">
-                  {% for policy in policies %}
-                  <option value="{{ policy.policy_id }}">{{ policy.policy_name }}</option>
-                  {% endfor %}
-              </select>
-          </div>
-          <div class="form-group">
-              <label for="coverage">Coverage Amount:</label>
-              <input type="number" class="form-control" id="coverage" name="coverage">
-          </div>
-          <div class="form-group">
-              <label for="deductible">Deductible Amount:</label>
-              <input type="number" class="form-control" id="deductible" name="deductible">
-          </div>
-          <button type="submit" class="btn btn-primary" style="margin:20px;">Calculate Quote</button>
-      </form>
-      <!-- Display the calculated quote if available -->
-      {% if quote %}
-      <div class="alert alert-success" role="alert">Your insurance quote is: R{{ quote }}</div>
-      {% endif %}
+    <div class="form-group">
+        <label for="car_value">Car Value:</label>
+        <input type="number" class="form-control" id="car_value" name="car_value">
+    </div>
+    <div class="form-group">
+        <label for="user_age">Your Age:</label>
+        <input type="number" class="form-control" id="user_age" name="user_age">
+    </div>
+    <div class="form-group">
+        <label for="user_email">Your Email:</label>
+        <input type="email" class="form-control" id="user_email" name="user_email">
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin:20px;">Calculate Quote</button>
+  </form>
 
-      <!-- Display error message if any -->
-      {% if error %}
-      <div class="alert alert-danger" role="alert">{{ error }}</div>
-      {% endif %}
-  </div>
-<!-- Footer -->
-<footer class="text-center text-lg-start bg-body-tertiary text-muted">  
-    <!-- Grid row -->
-    <div class="row" style="background-color: #0075c9; color:white; padding-top: 30px;">
-    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-        <h6 class="text-uppercase fw-bold mb-4">
-            Social Media
-        </h6>
-        <div class="social-icons">
-            <a href="https://m.facebook.com/sanlamgroup/" class="text-reset">
-              <i class="fa fa-facebook-f"></i>
-            </a>
-            <a href="https://twitter.com/sanlam?lang=en" class="text-reset">
-              <i class="fa fa-twitter"></i>
-            </a>
-            <a href="https://www.sanlam.co.za/Pages/default.aspx?gad_source=1&gclid=Cj0KCQjw2PSvBhDjARIsAKc2cgPw6IECa134xoxG2bbyTHNkeqzKex_5wus_2neBzxXKpEuOVAmONWgaAkTCEALw_wcB&gclsrc=aw.ds" class="text-reset">
-              <i class="fa fa-google"></i>
-            </a>
-            <a href="https://www.instagram.com/sanlam_group?igsh=YW1iZ2Zvbnlvc2hq" class="text-reset">
-              <i class="fa fa-instagram"></i>
-            </a>
-            <a href="https://www.linkedin.com/company/sanlam/" class="text-reset">
-              <i class="fa fa-linkedin"></i>
-            </a> 
-        </div>   
-    </div>
-      <!-- Grid column -->
-      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-        <!-- Links -->
-        <h6 class="text-uppercase fw-bold mb-4">
-          Explore
-        </h6>
-        <p>
-          <a href="/pol" class="text-reset">Home</a>
-        </p>
-        <p>
-          <a href="/" class="text-reset">Win Rewards</a>
-        </p>
-        <p>
-          <a href="/profile" class="text-reset">Profile</a>
-        </p>
-      </div>
-      <!-- Grid column -->
+  <!-- Display the calculated quote if available -->
+  {% if quote %}
+  <div class="alert alert-success" role="alert">Your insurance quote is: R{{ quote }}</div>
+  {% endif %}
   
-      <!-- Grid column -->
-      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-        <!-- Links -->
-        <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
-        <p><i class="fa fa-home me-3"></i> 2 Strand Rd, Bellville, Cape Town, 7530</p>
-        <p><i class="fa fa-phone me-3"></i> 021 947 9111</p>
-      </div>
-      <!-- Grid column -->
-    </div>
-    <!-- Grid row -->
-  
-    <!-- Copyright -->
-    <div class="text-center p-4" style="background-color: rgba(255, 255, 255);">
-        Copyright © 2024 | All rights reserved | Sanlam Limited is the Licensed controlling company of the Sanlam Limited Insurance Group. Sanlam Life Insurance Limited is a Licensed Life insurer, authorised financial services provider and a registered credit provider (NCRCP43)
-    </div>
-    <!-- Copyright -->
-  </footer>
-  <!-- Footer -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script></body>
-</html>
+  <!-- Display error message if any -->
+  {% if error %}
+  <div class="alert alert-danger" role="alert">{{ error }}</div>
+  {% endif %}
+</div>
+{% endblock%}
