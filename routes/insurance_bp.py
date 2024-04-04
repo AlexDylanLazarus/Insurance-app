@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, jsonify, request
-from app import Insurance, db
+from models.insurance import Insurance
+from extensions import db
 
 insurance_bp = Blueprint("insurance_bp", __name__)
 

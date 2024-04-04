@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, jsonify, request
-from app import cards
+from models.cards import cards
 
 
 cards_bp = Blueprint("cards_bp", __name__)

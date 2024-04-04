@@ -49,34 +49,37 @@
     </style>
 </head>
 <body>
-    <form method="post" action="/">
+    <form method="post" action="{{ url_for('users_bp.login') }}">
+        {{ form.hidden_tag() }}
         <!-- Email input -->
         <div class="form-group">
-          <label for="EmailAddress">Email address</label>
-          <input name="email" type="email" id="EmailAddress" class="form-control" required="required"/>
+            {{ form.email.label(for="email") }}
+            {{ form.email(class="form-control", id="email") }}
+            {% for error in form.email.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
         </div>
       
-        <!-- Password input -->
+        
         <div class="form-group">
-          <label for="form2Example2">Password</label>
-          <input name="password" type="password" id="form2Example2" class="form-control" required="required"/>
+            {{ form.password.label(for="password") }}
+            {{ form.password(class="form-control", id="password") }}
+            {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">{{ error }}</div>
+            {% endfor %}
         </div>
       
-        <!-- Remember me checkbox -->
-        <div class="form-check mb-4">
-          <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-          <label class="form-check-label" for="form2Example31"> Remember me </label>
-        </div>
-      
-        <!-- Submit button -->
+        
         <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
-                  <!-- Display error message if any -->
-                  {% if error %}
-                  <div class="alert alert-danger" role="alert">{{ error }}</div>
-                  {% endif %}
-        <!-- Register link -->
+        
+       
+        {% if error %}
+            <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+        
+       
         <div class="text-center">
-          <p>Not a member? <a href="/register">Register</a></p>
+            <p>Not a member? <a href="/register">Register</a></p>
         </div>
     </form>
 </body>
