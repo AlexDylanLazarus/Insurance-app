@@ -1,7 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Profile{% endblock %} 
 {% block content %} 
-
+<div class="container">
+    <h1 style="color:#0075c9">My Insurance Policies</h1>
+    <div class="row">
+        {% for policy in user_policies %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm" style="height:600px;">
+                <img src="{{ policy.image_url }}" class="card-img-top" alt="{{ policy.policy_name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ policy.policy_name }}</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock%}
 

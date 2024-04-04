@@ -1,6 +1,7 @@
-import uuid
 from extensions import db
+from sqlalchemy.orm import relationship
 from flask_login import UserMixin
+import uuid
 
 
 class User(UserMixin, db.Model):
@@ -20,6 +21,9 @@ class User(UserMixin, db.Model):
     City = db.Column(db.String(255))
     Country = db.Column(db.String(255))
     sex = db.Column(db.String(50))
+
+    # Define the relationship with UserInsurance
+    user_insurances = relationship("UserInsurance", back_populates="user")
 
     def to_dict(self):
         return {

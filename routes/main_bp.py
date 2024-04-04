@@ -3,6 +3,7 @@ from models.insurance import Insurance
 from models.user import User
 from models.cards import cards
 from models.potential_customers import PotentialCustomers
+from models.userinsurance import UserInsurance
 from extensions import db
 import random
 from .users_bp import LoginForm
@@ -37,7 +38,15 @@ def get_policy_page(policy_id):
 @main_bp.route("/profile")
 @login_required
 def profile():
-    return render_template("profile.html", user=current_user)
+    # Fetch the current logged-in user
+    user = User.query.get(current_user.id)
+
+    # Fetch the policies associated with the current user
+    user_policies = [user_insurance.policy for user_insurance in user.user_insurances]
+
+    return render_template(
+        "profile.html", user=current_user, user_policies=user_policies
+    )
 
 
 @main_bp.route("/", methods=["GET", "POST"])

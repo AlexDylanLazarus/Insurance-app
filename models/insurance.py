@@ -1,5 +1,6 @@
-import uuid
 from extensions import db
+from sqlalchemy.orm import relationship
+import uuid
 
 
 class Insurance(db.Model):
@@ -13,6 +14,9 @@ class Insurance(db.Model):
     deductible = db.Column(db.Float)
     details = db.Column(db.String(1000))
     image_url = db.Column(db.String(255))
+
+    # Define the relationship with UserInsurance
+    user_insurances = relationship("UserInsurance", back_populates="policy")
 
     # JSON
     def to_dict(self):
