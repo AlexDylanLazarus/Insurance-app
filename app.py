@@ -44,11 +44,15 @@ from routes.cards_bp import cards_bp
 from routes.insurance_bp import insurance_bp
 from routes.users_bp import users_bp
 from routes.main_bp import main_bp
+from routes.potential_bp import potential_bp
+from routes.userinsurance_bp import userinsurance_bp
 
 app.register_blueprint(cards_bp, url_prefix="/cards")
 app.register_blueprint(users_bp)
 app.register_blueprint(insurance_bp)
 app.register_blueprint(main_bp)
+app.register_blueprint(potential_bp, url_prefix="/potential")
+app.register_blueprint(userinsurance_bp, url_prefix="/userinsurance")
 
 
 @login_manager.user_loader
