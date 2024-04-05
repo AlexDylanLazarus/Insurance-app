@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
 from models.insurance import Insurance
 from models.user import User
 from models.cards import cards
@@ -7,9 +7,28 @@ from models.userinsurance import UserInsurance
 from extensions import db
 import random
 from .users_bp import LoginForm
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, logout_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, PasswordField
+from wtforms.validators import InputRequired, Email, ValidationError
+from werkzeug.security import generate_password_hash
+
 
 main_bp = Blueprint("main_bp", __name__)
+
+
+class UpdateDetailsForm(FlaskForm):
+    new_email = StringField("New Email", validators=[InputRequired(), Email()])
+    new_password = PasswordField("New Password")
+
+    def validate_new_email(self, field):
+        if (
+            field.data != current_user.Email
+            and User.query.filter_by(Email=field.data).first()
+        ):
+            raise ValidationError("Email already exists.")
+
+    submit = SubmitField("Update Details")
 
 
 @main_bp.route("/pol")
@@ -40,12 +59,16 @@ def get_policy_page(policy_id):
 def profile():
     # Fetch the current logged-in user
     user = User.query.get(current_user.id)
-
+    update_details_form = UpdateDetailsForm(obj=user)
     # Fetch the policies associated with the current user
-    user_policies = [user_insurance.policy for user_insurance in user.user_insurances]
-
+    user_policies = [
+        user_insurance.policy for user_insurance in current_user.user_insurances
+    ]
     return render_template(
-        "profile.html", user=current_user, user_policies=user_policies
+        "profile.html",
+        user=user,
+        user_policies=user_policies,
+        update_details_form=update_details_form,
     )
 
 
@@ -123,3 +146,66 @@ def try_again():
             return "Insufficient credits. Please add more credits to play."
     else:
         return "User not found"  # Handle case where user is not found
+
+
+@main_bp.route("/logout", methods=["POST"])
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out successfully.", "success")
+    return redirect(url_for("users_bp.login"))
+
+
+@main_bp.route("/delete_account", methods=["POST"])
+@login_required
+def delete_account():
+    # Fetch the current logged-in user
+    user = User.query.get(current_user.id)
+
+    # Delete the user's account
+    db.session.delete(user)
+    db.session.commit()
+
+    # Log the user out
+    logout_user()
+
+    flash("Your account has been successfully deleted.", "success")
+    return redirect(url_for("users_bp.login"))
+
+
+@main_bp.route("/update_details", methods=["POST"])
+@login_required
+def update_details():
+    user = User.query.get(current_user.id)
+    update_details_form = UpdateDetailsForm()
+
+    if update_details_form.validate_on_submit():
+        new_email = update_details_form.new_email.data
+        new_password = update_details_form.new_password.data
+
+        if new_email != user.Email:
+            user.Email = new_email
+
+        if new_password:
+            hashed_password = generate_password_hash(new_password)
+            user.Password = hashed_password
+
+        try:
+            db.session.commit()
+            flash("Your details have been updated successfully.", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"An error occurred: {str(e)}", "error")
+
+        return redirect(url_for("main_bp.profile"))
+
+    # If form validation fails, render the profile template again
+    user_policies = [
+        user_insurance.policy for user_insurance in current_user.user_insurances
+    ]
+    return render_template(
+        "profile.html",
+        user=current_user,
+        user_policies=user_policies,
+        update_details_form=update_details_form,
+    )

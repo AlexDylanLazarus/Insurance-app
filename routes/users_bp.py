@@ -6,6 +6,7 @@ from wtforms import StringField, PasswordField, SubmitField, DateField, SelectFi
 from flask_wtf import FlaskForm
 from flask_login import login_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import func
 
 users_bp = Blueprint("users_bp", __name__)
 
@@ -80,7 +81,9 @@ class LoginForm(FlaskForm):
 
     # Custom validation for email
     def validate_email(self, field):
-        user = User.query.filter_by(Email=field.data).first()
+        user = User.query.filter(
+            func.lower(User.Email) == func.lower(field.data)
+        ).first()
         if not user:
             raise ValidationError("Invalid email address")
 
@@ -165,7 +168,9 @@ def login():
 @users_bp.route("/register", methods=["GET", "POST"])
 def register():
     form = RegistrationForm()
-    if form.validate_on_submit():
+    if (
+        form.validate_on_submit()
+    ):  # This condition ensures the form is submitted via POST
         # Create a new user instance with form data
         password_hash = generate_password_hash(form.password.data)
         new_user = User(
@@ -190,4 +195,6 @@ def register():
 
         # Redirect to login page after successful registration
         return redirect(url_for("users_bp.login"))
+
+    # If the form is not submitted via POST (e.g., GET request), render the registration form
     return render_template("register.html", form=form)

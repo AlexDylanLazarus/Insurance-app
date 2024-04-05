@@ -15,7 +15,50 @@
         </div>
         {% endfor %}
     </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h1 style="color:#0075c9">Update Profile Details</h1>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <form action="/update_details" method="POST">
+                {{ update_details_form.hidden_tag() }}
+    <input type="hidden" name="user_id" value="{{ current_user.id }}">
+                <div class="form-group">
+                    {{ update_details_form.new_email.label }}
+                    {{ update_details_form.new_email(class="form-control", value=user.email) }}
+                    {% for error in update_details_form.new_email.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{ update_details_form.new_password.label }}
+                    {{ update_details_form.new_password(class="form-control") }}
+                    {% for error in update_details_form.new_password.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {{ update_details_form.submit(class="btn btn-success") }} <!-- Include the submit button -->
+            </form>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <form action="/delete_account" method="POST">
+                <button type="submit" class="btn btn-danger">Delete Account</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <form action="/logout" method="POST">
+                <button type="submit" class="btn btn-primary">Logout</button>
+            </form>
+        </div>
+    </div>
 </div>
-
-{% endblock%}
-
+{% endblock %}
