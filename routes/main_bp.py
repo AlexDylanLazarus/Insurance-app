@@ -1,4 +1,13 @@
-from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    jsonify,
+    flash,
+    redirect,
+    url_for,
+    session,
+)
 from models.insurance import Insurance
 from models.user import User
 from models.cards import cards
@@ -80,12 +89,10 @@ def home_page():
 
 @main_bp.route("/calculate_quote", methods=["POST"])
 def calculate_quote():
-    # Assuming it's car insurance
     insurance_policy_id = request.form.get("insurance_policy")
     user_age = int(request.form.get("user_age"))
     user_email = request.form.get("user_email")
 
-    # Retrieve the insurance policy based on the provided ID
     insurance_policy = Insurance.query.get(insurance_policy_id)
 
     if not insurance_policy:
@@ -100,18 +107,15 @@ def calculate_quote():
     car_year = int(request.form.get("car_year"))
     car_value = float(request.form.get("car_value"))
 
-    # Calculate base quote based on car details
     base_quote = premium * (car_year / 10) * (car_value / 1000)
 
-    # Apply age-based discounts
     if user_age < 25:
-        discount = 0.2  # 20% discount for users under 25 years old
+        discount = 0.2
     elif user_age >= 25 and user_age < 40:
-        discount = 0.1  # 10% discount for users between 25 and 40 years old
+        discount = 0.1
     else:
-        discount = 0  # No discount for users 40 years old and above
+        discount = 0
 
-    # Calculate final quote after applying discount
     final_quote = base_quote * (1 - discount)
 
     # Check if the email already exists in the table
@@ -120,10 +124,10 @@ def calculate_quote():
     if existing_customer:
         return render_template("get_a_quote.html", quote=final_quote)
 
-    # Save the user's email to the potential customers table
-    new_customer = PotentialCustomers(email=user_email)
-    db.session.add(new_customer)
-    db.session.commit()
+    if not existing_customer:
+        new_customer = PotentialCustomers(email=user_email)
+        db.session.add(new_customer)
+        db.session.commit()
 
     return render_template("get_a_quote.html", quote=final_quote)
 
@@ -152,6 +156,7 @@ def try_again():
 @login_required
 def logout():
     logout_user()
+    session.clear()
     flash("You have been logged out successfully.", "success")
     return redirect(url_for("users_bp.login"))
 
@@ -168,6 +173,7 @@ def delete_account():
 
     # Log the user out
     logout_user()
+    session.clear()
 
     flash("Your account has been successfully deleted.", "success")
     return redirect(url_for("users_bp.login"))

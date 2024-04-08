@@ -1,4 +1,13 @@
-from flask import Blueprint, render_template, jsonify, request, redirect, url_for
+from flask import (
+    Blueprint,
+    render_template,
+    jsonify,
+    request,
+    redirect,
+    url_for,
+    session,
+    flash,
+)
 from models.user import User
 from extensions import db
 from wtforms.validators import InputRequired, Length, ValidationError, Email
@@ -192,6 +201,8 @@ def register():
         # Add the new user to the database session and commit
         db.session.add(new_user)
         db.session.commit()
+        flash("Registration successful! You can now log in.", "success")
+        session.clear()
 
         # Redirect to login page after successful registration
         return redirect(url_for("users_bp.login"))
