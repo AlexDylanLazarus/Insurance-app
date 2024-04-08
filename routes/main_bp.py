@@ -158,7 +158,7 @@ def logout():
     logout_user()
     session.clear()
     flash("You have been logged out successfully.", "success")
-    return redirect(url_for("users_bp.login"))
+    return redirect(url_for("main_bp.pol"))
 
 
 @main_bp.route("/delete_account", methods=["POST"])
