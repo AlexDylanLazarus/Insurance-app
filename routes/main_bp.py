@@ -82,8 +82,9 @@ def profile():
 
 
 @main_bp.route("/", methods=["GET", "POST"])
-@login_required
 def home_page():
+    if not current_user.is_authenticated:
+        return redirect(url_for("main_bp.pol"))
     return render_template("index.html", user=current_user, cards=cards)
 
 
@@ -167,16 +168,24 @@ def delete_account():
     # Fetch the current logged-in user
     user = User.query.get(current_user.id)
 
-    # Delete the user's account
-    db.session.delete(user)
-    db.session.commit()
+    try:
+        # Delete user insurances associated with the user
+        UserInsurance.query.filter_by(user_id=user.id).delete()
 
-    # Log the user out
-    logout_user()
-    session.clear()
+        # Delete the user's account
+        db.session.delete(user)
+        db.session.commit()
 
-    flash("Your account has been successfully deleted.", "success")
-    return redirect(url_for("users_bp.login"))
+        # Log the user out
+        logout_user()
+        session.clear()
+
+        flash("Your account has been successfully deleted.", "success")
+        return redirect(url_for("main_bp.pol"))
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred: {str(e)}", "error")
+        return redirect(url_for("main_bp.profile"))
 
 
 @main_bp.route("/update_details", methods=["POST"])

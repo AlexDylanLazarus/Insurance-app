@@ -1,0 +1,12 @@
+# What is my app?
+- I created an insurance app that expands upon what Sanlam currently has in place. 
+- It is built the customer's perspective where they may:
+    - Register,
+    - Login,
+    - Logout,
+    - View Sanlam's policies
+    - View their own policies, 
+    - Update their account details,    
+    - Get a quote on car insurance, 
+    - Delete their account, 
+    - Win rewards from the [Sanlam Reality website](https://www.sanlamreality.co.za/join/?gad_source=1&gclid=EAIaIQobChMInN2C07G1hQMV6URBAh2KLARpEAAYASAAEgJ-0fD_BwE&gclsrc=aw.ds)
