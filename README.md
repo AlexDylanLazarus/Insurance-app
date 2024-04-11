@@ -49,4 +49,4 @@ In my app I have the option, to group routes and their corresponding functions u
 [Sanlam Insurance Web App]()
 
 ## Github link
-[GitHub]()
+[Alex Dylan Lazarus Insurance App](https://github.com/AlexDylanLazarus/Insurance-app)
